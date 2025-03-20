@@ -1,0 +1,80 @@
+{
+  "name": "auto-post-facebook",
+  "version": "1.0.0",
+  "description": "Workflow tự động đăng bài lên Facebook Fanpage từ Google Sheets",
+  "author": "insightfreedom247",
+  "license": "MIT",
+  "tags": ["facebook", "automation", "content-creation", "social-media"],
+  
+  "requirements": {
+    "openai": "^4.0.0",
+    "facebook-api": "^18.0.0",
+    "google-sheets": "^4.0.0"
+  },
+  
+  "configuration": {
+    "google_sheets": {
+      "spreadsheet_id": "",
+      "sheet_name": "Posts",
+      "range": "A2:D",
+      "columns": {
+        "title": "A",
+        "keywords": "B",
+        "tone": "C",
+        "status": "D"
+      }
+    },
+    
+    "openai": {
+      "model": "gpt-4",
+      "temperature": 0.7,
+      "max_tokens": 1000,
+      "image_model": "dall-e-3",
+      "image_size": "1024x1024",
+      "image_quality": "standard"
+    },
+    
+    "facebook": {
+      "page_id": "",
+      "post_type": "photo",
+      "scheduling": {
+        "enabled": true,
+        "timezone": "Asia/Ho_Chi_Minh",
+        "optimal_times": [
+          "10:00",
+          "15:00",
+          "20:00"
+        ]
+      }
+    }
+  },
+  
+  "environment_variables": {
+    "required": [
+      "OPENAI_API_KEY",
+      "FACEBOOK_ACCESS_TOKEN",
+      "GOOGLE_SHEETS_CREDENTIALS"
+    ],
+    "optional": [
+      "PROXY_URL",
+      "DEBUG_MODE"
+    ]
+  },
+  
+  "error_handling": {
+    "max_retries": 3,
+    "retry_delay": 5000,
+    "log_errors": true,
+    "notify_on_error": true
+  },
+  
+  "monitoring": {
+    "log_level": "info",
+    "metrics": [
+      "posts_created",
+      "api_calls",
+      "error_rate",
+      "response_time"
+    ]
+  }
+}

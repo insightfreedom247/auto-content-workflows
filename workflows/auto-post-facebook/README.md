@@ -1,106 +1,146 @@
-# 📘 Tự động đăng bài Facebook từ Google Sheets
+# 🤖 Workflow Tự động đăng bài Facebook
 
-<div align="center">
-  <img src="images/cover.png" width="800" alt="Workflow Overview"/>
-  <br/><br/>
-  <p>
-    <a href="#🎯-tính-năng"><img src="https://img.shields.io/badge/Tính_năng-4-brightgreen?style=for-the-badge" alt="Features"/></a>
-    <a href="#🔧-yêu-cầu"><img src="https://img.shields.io/badge/Yêu_cầu-3-orange?style=for-the-badge" alt="Requirements"/></a>
-    <a href="#📝-hướng-dẫn"><img src="https://img.shields.io/badge/Hướng_dẫn-Chi_tiết-blue?style=for-the-badge" alt="Tutorial"/></a>
-  </p>
-</div>
+![Workflow Cover](./images/cover.svg)
 
-## 🎯 Tính năng
+## 📝 Mô tả
 
-- 📊 **Đọc dữ liệu từ Google Sheets**
-  - Tự động đọc tiêu đề và nội dung từ sheet
-  - Hỗ trợ lập lịch đăng bài
-  - Theo dõi trạng thái đăng
+Workflow này tự động hóa quy trình đăng bài lên Facebook Fanpage từ dữ liệu trong Google Sheets, sử dụng AI để tạo nội dung và hình ảnh chất lượng cao.
 
-- 🤖 **Tối ưu nội dung với AI**
-  - Sử dụng GPT-4 để cải thiện nội dung
-  - Tự động thêm hashtag phù hợp
-  - Tối ưu độ dài và format
+## 🔧 Các thành phần
 
-- 🎨 **Tạo hình ảnh với AI**
-  - Sử dụng DALL-E để tạo hình ảnh
-  - Tự động điều chỉnh kích thước
-  - Tối ưu cho Facebook
+### 1. Google Sheets
+- Đọc dữ liệu từ sheet được chỉ định (cột A-D)
+- Cấu trúc dữ liệu:
+  - Cột A: Tiêu đề bài viết
+  - Cột B: Từ khóa chính
+  - Cột C: Tone giọng điệu
+  - Cột D: Trạng thái đăng
 
-- 📱 **Đăng bài tự động**
-  - Đăng lên Facebook Fanpage
-  - Hỗ trợ đăng hình ảnh
-  - Theo dõi trạng thái
+### 2. OpenAI GPT-4
+- Tự động tạo nội dung từ tiêu đề và từ khóa
+- Tối ưu hóa theo tone giọng điệu yêu cầu
+- Tạo hashtags phù hợp
 
-## 🔧 Yêu cầu
+### 3. OpenAI DALL-E
+- Tạo hình ảnh minh họa từ nội dung
+- Tùy chỉnh phong cách và kích thước
+- Đảm bảo chất lượng hình ảnh cao
 
-1. **Google Sheets API**
-   - Tài khoản Google Cloud
-   - API key và OAuth credentials
-   - [Hướng dẫn cài đặt](docs/google-sheets-setup.md)
+### 4. Facebook Graph API
+- Tự động đăng bài lên Fanpage
+- Đính kèm hình ảnh và hashtags
+- Cập nhật trạng thái trong Google Sheets
 
-2. **OpenAI API**
-   - API key từ OpenAI
-   - Truy cập GPT-4 và DALL-E
-   - [Hướng dẫn cài đặt](docs/openai-setup.md)
+## ⚙️ Cài đặt
 
-3. **Facebook Graph API**
-   - Facebook Developer Account
-   - Page Access Token
-   - [Hướng dẫn cài đặt](docs/facebook-setup.md)
+1. Chuẩn bị Google Sheets:
+   ```
+   ID Sheet | Tiêu đề | Từ khóa | Tone | Trạng thái
+   1        | ...     | ...     | ...  | Chưa đăng
+   ```
 
-## 📝 Hướng dẫn
+2. Cấu hình API Keys:
+   - OpenAI API Key
+   - Facebook Graph API Token
+   - Google Sheets API Credentials
 
-### 1. Chuẩn bị Google Sheet
+3. Thiết lập môi trường:
+   ```env
+   OPENAI_API_KEY=your_key_here
+   FACEBOOK_ACCESS_TOKEN=your_token_here
+   GOOGLE_SHEETS_CREDENTIALS=your_credentials_here
+   ```
 
-- Tạo Google Sheet mới với các cột:
-  - A: Tiêu đề
-  - B: Nội dung gợi ý
-  - C: Thời gian đăng
-  - D: Trạng thái
+## 🎯 Hướng dẫn sử dụng
 
-### 2. Cài đặt Workflow
+1. Nhập dữ liệu vào Google Sheets theo mẫu
+2. Chạy workflow tự động hoặc thủ công
+3. Kiểm tra kết quả trên Facebook Fanpage
+4. Theo dõi trạng thái trong Google Sheets
 
-1. Copy file `workflow.json` vào n8n:
-```json
-{"name":"Auto Post Facebook","nodes":[...]}```
+## 🔄 Quy trình làm việc
 
-2. Cấu hình các credentials:
-   - Google Sheets
-   - OpenAI
-   - Facebook
+1. **Thu thập dữ liệu**
+   - Nhập tiêu đề và từ khóa vào Google Sheets
+   - Chọn tone giọng điệu phù hợp
 
-3. Cập nhật các biến môi trường:
-```env
-SHEET_ID=your_sheet_id
-FB_PAGE_ID=your_page_id
-```
+2. **Tạo nội dung**
+   - GPT-4 phân tích và tạo bài viết
+   - Tối ưu hóa nội dung theo yêu cầu
 
-### 3. Chạy thử
+3. **Tạo hình ảnh**
+   - DALL-E tạo hình ảnh minh họa
+   - Tùy chỉnh và kiểm tra chất lượng
 
-1. Thêm dữ liệu test vào Google Sheet
-2. Kích hoạt workflow
-3. Kiểm tra kết quả trên Facebook
+4. **Đăng bài**
+   - Tự động đăng lên Facebook Fanpage
+   - Cập nhật trạng thái trong sheets
 
-## 📊 Theo dõi
+## 📊 Theo dõi và báo cáo
 
-- Cột D trong Google Sheet sẽ hiển thị trạng thái:
-  - 🟡 Đang xử lý
-  - 🟢 Đăng thành công
-  - 🔴 Lỗi
+- Kiểm tra trạng thái đăng trong Google Sheets
+- Theo dõi tương tác trên Facebook
+- Phân tích hiệu quả nội dung
 
-## 🔍 Xử lý lỗi
+## 🚀 Tối ưu hóa
 
-- Kiểm tra logs trong n8n
-- Xác nhận các credentials còn hạn
-- [Danh sách lỗi thường gặp](docs/troubleshooting.md)
+1. **Nội dung**
+   - Sử dụng từ khóa phù hợp
+   - Tối ưu độ dài bài viết
+   - Thêm call-to-action hiệu quả
 
-## 📈 Tối ưu
+2. **Hình ảnh**
+   - Chọn phong cách phù hợp
+   - Tối ưu kích thước và chất lượng
+   - Thêm watermark nếu cần
 
-- Điều chỉnh prompt AI trong node OpenAI
-- Thay đổi tần suất chạy workflow
-- Thêm node xử lý lỗi
+3. **Thời gian**
+   - Lên lịch đăng bài hợp lý
+   - Tránh thời điểm trùng lặp
+   - Theo dõi thời gian tương tác tốt nhất
+
+## 🛠 Xử lý lỗi
+
+1. **Lỗi API**
+   - Kiểm tra API keys
+   - Xác nhận quyền truy cập
+   - Làm mới tokens nếu cần
+
+2. **Lỗi nội dung**
+   - Kiểm tra định dạng dữ liệu
+   - Xác nhận giới hạn ký tự
+   - Điều chỉnh tone giọng điệu
+
+3. **Lỗi đăng bài**
+   - Kiểm tra kết nối mạng
+   - Xác nhận quyền Fanpage
+   - Thử lại sau vài phút
+
+## 📈 Kết quả mong đợi
+
+- Tự động hóa 100% quy trình đăng bài
+- Tiết kiệm 80% thời gian quản lý nội dung
+- Tăng tương tác trên Facebook Fanpage
+- Duy trì chất lượng nội dung nhất quán
 
 ## 🤝 Đóng góp
 
-Mọi đóng góp đều được chào đón! Hãy tạo pull request hoặc issue.
+Mọi đóng góp đều được hoan nghênh! Vui lòng:
+
+1. Fork repository
+2. Tạo branch mới
+3. Commit thay đổi
+4. Push lên branch
+5. Tạo Pull Request
+
+## 📄 Giấy phép
+
+Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.
+
+## 🙋‍♂️ Hỗ trợ
+
+Nếu bạn cần hỗ trợ hoặc có câu hỏi:
+
+- Tạo Issue trên GitHub
+- Gửi email về: haiquangbh1a1b1c@gmail.com
+- Tham gia nhóm Telegram: [Link group]

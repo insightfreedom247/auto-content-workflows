@@ -3,43 +3,138 @@
   "nodes": [
     {
       "parameters": {
-        "sheetId": "={{$env.SHEET_ID}}",
-        "range": "A:D",
-        "headerRow": true
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "operation": "equals",
+              "value": 9
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "sheetName": "Sheet1",
+        "range": "A:D"
       },
       "name": "Google Sheets",
       "type": "n8n-nodes-base.googleSheets",
-      "position": [250, 300]
+      "typeVersion": 2,
+      "position": [300, 300]
     },
     {
       "parameters": {
-        "model": "gpt-4",
-        "prompt": "=Tạo nội dung bài viết dựa trên: {{$node.Google_Sheets.json.title}}",
-        "temperature": 0.7
+        "functionCode": "return items.map(item => ({\n  message: `${item.title}\\n\\n${item.content}`,\n  image_url: item.image_url,\n  status: item.status\n}));"
       },
-      "name": "OpenAI",
-      "type": "n8n-nodes-base.openai",
-      "position": [450, 300]
+      "name": "Function",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 300]
     },
     {
       "parameters": {
-        "model": "dall-e-3",
-        "prompt": "={{$node.OpenAI.json.text}}",
-        "size": "1024x1024"
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"status\"]}}",
+              "value2": "Chưa đăng"
+            }
+          ]
+        }
       },
-      "name": "Image Generation",
-      "type": "n8n-nodes-base.openai",
-      "position": [650, 300]
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 300]
     },
     {
       "parameters": {
-        "pageId": "={{$env.FB_PAGE_ID}}",
-        "content": "={{$node.OpenAI.json.text}}",
-        "imageUrl": "={{$node.Image_Generation.json.url}}"
+        "resource": "photo",
+        "message": "={{$node[\"Function\"].json[\"message\"]}}",
+        "media_url": "={{$node[\"Function\"].json[\"image_url\"]}}"
       },
       "name": "Facebook",
       "type": "n8n-nodes-base.facebookGraphApi",
-      "position": [850, 300]
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "sheetName": "Sheet1",
+        "range": "D={{$rowIndex}}",
+        "values": {
+          "value": "Đã đăng"
+        }
+      },
+      "name": "Update Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 2,
+      "position": [1100, 300]
     }
-  ]
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook": {
+      "main": [
+        [
+          {
+            "node": "Update Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
 }

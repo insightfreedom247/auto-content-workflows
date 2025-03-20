@@ -1,21 +1,36 @@
 # 🤖 Tự động đăng bài Facebook từ Google Sheets
 
-![Workflow Preview](./images/workflow-preview.svg)
+## Tổng quan Workflow
+![Workflow Overview](./images/workflow-overview.png)
+
+<div align="center">
+  <a href="./images/workflow-detail.png" target="_blank">
+    <button style="
+      background-color: #4a5568;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 20px 0;
+    ">
+      👀 Xem chi tiết Workflow
+    </button>
+  </a>
+</div>
 
 ## 📝 Mô tả
-Workflow này tự động hóa việc đăng bài lên Facebook từ dữ liệu trong Google Sheets, sử dụng AI để tạo nội dung và hình ảnh chất lượng cao.
+Workflow này tự động hóa việc đăng bài lên Facebook từ dữ liệu trong Google Sheets. Workflow bao gồm các bước:
 
-## ✨ Tính năng chính
-- 📊 Đọc dữ liệu từ Google Sheets
-- 🤖 Tạo nội dung với OpenAI GPT-4
-- 🎨 Tạo hình ảnh với DALL-E
-- 📱 Tự động đăng lên Facebook
-- ⏰ Lập lịch đăng bài tự động
+1. **Schedule Trigger**: Lập lịch chạy tự động
+2. **Google Sheets**: Đọc dữ liệu từ sheet
+3. **Function**: Xử lý và định dạng dữ liệu
+4. **IF**: Kiểm tra điều kiện đăng bài
+5. **Facebook**: Đăng bài lên Facebook
+6. **Update Sheet**: Cập nhật trạng thái đã đăng
 
-## 🛠️ Công nghệ sử dụng
-- Google Sheets
-- OpenAI (GPT-4 & DALL-E)
-- Facebook Graph API
+## 🚀 Sử dụng Workflow
 
 <div align="center">
   <button id="copyButton" onclick="copyWorkflow()" style="
@@ -28,7 +43,7 @@ Workflow này tự động hóa việc đăng bài lên Facebook từ dữ liệ
     cursor: pointer;
     margin: 20px 0;
   ">
-    Use workflow
+    📋 Copy Workflow
   </button>
 </div>
 
@@ -40,11 +55,11 @@ async function copyWorkflow() {
     await navigator.clipboard.writeText(json);
     
     const button = document.getElementById('copyButton');
-    button.textContent = 'Copied!';
+    button.textContent = '✅ Đã copy!';
     button.style.backgroundColor = '#2f9e44';
     
     setTimeout(() => {
-      button.textContent = 'Use workflow';
+      button.textContent = '📋 Copy Workflow';
       button.style.backgroundColor = '#37b24d';
     }, 2000);
   } catch (err) {
